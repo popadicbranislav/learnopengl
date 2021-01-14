@@ -4,13 +4,6 @@ project(learnopengl VERSION 0.1.0)
 
 add_subdirectory(glad)
 add_subdirectory(glfw)
-add_subdirectory(learnopengl)
+add_subdirectory(getting_started)
 
-
-target_include_directories(learnopengl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
-
-
-# target_include_directories(learnopengl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/glad)
-# target_include_directories(learnopengl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes/KHR)
-
-# add_library(GLAD "src/glad.c")
+target_include_directories(getting_started PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
