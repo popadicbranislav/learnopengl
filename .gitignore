@@ -1,0 +1,15 @@
+# The canonical out-of-tree build subdirectory
+build
+
+# CMake clutter
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+CMakeDoxyfile.in
+CMakeDoxygenDefaults.cmake
+cmake_install.cmake
+cmake_uninstall.cmake
+
+
+# Makefile generator clutter
+Makefile
