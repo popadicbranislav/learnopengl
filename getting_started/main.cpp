@@ -91,8 +91,8 @@ int main(int, char **)
         float xOffset = sin(glfwGetTime()) / 2.0f;
         float yOffset = cos(glfwGetTime()) / 2.0f;
 
-        ourShader.setFloat("horizontal_offset", xOffset);
-        ourShader.setFloat("vertical_offset", yOffset);
+        ourShader.setFloat("xOffset", xOffset);
+        ourShader.setFloat("yOffset", yOffset);
 
         // now render the triangel
         glBindVertexArray(VAO);
