@@ -4,6 +4,7 @@
 #include "shader.h"
 
 #include <iostream>
+#include <math.h>
 
 void setupWindowHints();
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
@@ -85,6 +86,13 @@ int main(int, char **)
 
         // be sure to activate the shader
         ourShader.use();
+
+
+        float xOffset = sin(glfwGetTime()) / 2.0f;
+        float yOffset = cos(glfwGetTime()) / 2.0f;
+
+        ourShader.setFloat("horizontal_offset", xOffset);
+        ourShader.setFloat("vertical_offset", yOffset);
 
         // now render the triangel
         glBindVertexArray(VAO);
