@@ -23,6 +23,8 @@ const unsigned int SCR_HEIGHT = 768;
 float x_dif = 0.0f;
 float y_dif = 0.0f;
 
+float scale = 1.0f;
+
 int main(int, char **)
 {
 	// glfw initialize and configure
@@ -169,7 +171,7 @@ int main(int, char **)
 		glm::mat4 trans = glm::mat4(1.0f); // initialize matrix to identity matrix
 		trans = glm::translate(trans, glm::vec3(x_dif, y_dif, 0.0));
 		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-		trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+		trans = glm::scale(trans, glm::vec3(scale));
 
 		// get matrix's uniform location and set matrix
 		ourShader.use();
@@ -249,6 +251,16 @@ void handleInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 	{
 		x_dif -= dif_step;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+	{
+		scale += dif_step;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+	{
+		scale -= dif_step;
 	}
 
 }
