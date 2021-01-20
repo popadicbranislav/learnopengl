@@ -16,8 +16,6 @@ void handleInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 768;
 
-float blend_uniform = 0.2f;
-
 int main(int, char **)
 {
 	// glfw initialize and configure
@@ -159,8 +157,6 @@ int main(int, char **)
 		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		ourShader.setFloat("blend", blend_uniform);
-
 		// bind texture
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
@@ -226,21 +222,5 @@ void handleInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
-	float blend_step = 0.01f;
-
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
-		blend_uniform += blend_step;
-		if (blend_uniform > 1.0f)
-			blend_uniform = 1.0f;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		blend_uniform -= blend_step;
-		if (blend_uniform < 0.0f)
-			blend_uniform = 0.0f;
 	}
 }
