@@ -20,11 +20,6 @@ void handleInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 768;
 
-float x_dif = 0.0f;
-float y_dif = 0.0f;
-
-float scale = 1.0f;
-
 int main(int, char **)
 {
 	// glfw initialize and configure
@@ -169,13 +164,24 @@ int main(int, char **)
 
 		// create transformations
 		glm::mat4 trans = glm::mat4(1.0f); // initialize matrix to identity matrix
-		trans = glm::translate(trans, glm::vec3(x_dif, y_dif, 0.0));
+		trans = glm::translate(trans, glm::vec3(0.5, -0.5, 0.0));
 		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
-		trans = glm::scale(trans, glm::vec3(scale));
+		trans = glm::scale(trans, glm::vec3(0.5));
 
 		// get matrix's uniform location and set matrix
 		ourShader.use();
 		unsigned int transformLocation = glGetUniformLocation(ourShader.ID, "transform");
+		glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
+
+		// render container
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		trans = glm::mat4(1.0f); // reset matrix to identity matrix
+		trans = glm::translate(trans, glm::vec3(-0.5, 0.5, 0.0));
+		float scale_amount = sin(glfwGetTime());
+		trans = glm::scale(trans, glm::vec3(scale_amount, scale_amount, scale_amount));
+
 		glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
 		// render container
@@ -234,33 +240,4 @@ void handleInput(GLFWwindow *window)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-
-	float dif_step = 0.01f;
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-	{
-		y_dif += dif_step;
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-	{
-		y_dif -= dif_step;
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-	{
-		x_dif += dif_step;
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-	{
-		x_dif -= dif_step;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
-	{
-		scale += dif_step;
-	}
-
-	if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
-	{
-		scale -= dif_step;
-	}
-
 }
