@@ -179,7 +179,7 @@ int main(int, char **)
 
 		trans = glm::mat4(1.0f); // reset matrix to identity matrix
 		trans = glm::translate(trans, glm::vec3(-0.5, 0.5, 0.0));
-		float scale_amount = sin(glfwGetTime());
+		float scale_amount = sin(glfwGetTime()) / 2.0f + 0.5f;
 		trans = glm::scale(trans, glm::vec3(scale_amount, scale_amount, scale_amount));
 
 		glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(trans));
