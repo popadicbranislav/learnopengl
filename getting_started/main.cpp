@@ -97,13 +97,15 @@ int main(int, char **)
 	glGenTextures(1, &texture1);
 	glBindTexture(GL_TEXTURE_2D, texture1);
 	// set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	 // set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // set texture wrapping to GL_REPEAT (default wrapping method)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	// set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// load image, create texture and generate mipmaps
 	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+
 	unsigned char *data = stbi_load("/home/brano/Code/Projects/learnopengl/getting_started/resources/textures/container.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
@@ -126,7 +128,6 @@ int main(int, char **)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// load image, create texture and generate mipmaps
-	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load("/home/brano/Code/Projects/learnopengl/getting_started/resources/textures/awesomeface.png", &width, &height, &nrChannels, 0);
 	if (data)
 	{
