@@ -20,6 +20,13 @@ void handleInput(GLFWwindow *window);
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 768;
 
+float xOffset = 0.0f;
+float yOffset = 0.0f;
+
+float zoomLevel = -3.0f;
+
+float FOV = 45.0f;
+
 int main(int, char **)
 {
 	// glfw initialize and configure
@@ -215,13 +222,11 @@ int main(int, char **)
 		ourShader.use();
 
 		// // create transformations
-		// glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
-		// model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		view = glm::translate(view, glm::vec3(xOffset, yOffset, zoomLevel));
+		projection = glm::perspective(glm::radians(FOV), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 		unsigned int modelLocation = glGetUniformLocation(ourShader.ID, "model");
 		// glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
@@ -233,14 +238,13 @@ int main(int, char **)
 		glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 
 		// render container
-		// glBindVertexArray(VAO);
-		// glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(VAO);
 		for (unsigned int i = 0; i < 10; i++)
 		{
+			// calculate the model matrix for each object and pass it to shader before drawing
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i;
+			float angle = i % 3 != 0 ? 20.0f * i : (float)glfwGetTime() * 25.0f; // every third cube including 1st one rotates over time
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 			glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -290,13 +294,39 @@ void handleInput(GLFWwindow *window)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
+	// if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	// {
+	// 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// }
 
 	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+	float step = 0.1f;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+		yOffset -= step;
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		yOffset += step;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	{
+		xOffset += step;
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	{
+		xOffset -= step;
+	}
+	if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+	{
+		zoomLevel -= step;
+	}
+	if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+	{
+		zoomLevel += step;
 	}
 }
