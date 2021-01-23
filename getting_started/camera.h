@@ -87,10 +87,20 @@ public:
             Position -= Right * velocity;
         if (direction == RIGHT)
             Position += Right * velocity;
-        if(direction == UP)
+        if (direction == UP)
             Position += Up * velocity;
-        if(direction == DOWN)
+        if (direction == DOWN)
             Position -= Up * velocity;
+
+        
+        /* 
+        // Camera - exercise 1:
+            See if you can transform the camera class in such a way 
+            that it becomes a true fps camera where you cannot fly;
+            you can only look around while staying on the xz plan 
+        Solution: Set the y position back to 0.0f    
+        */
+        Position.y = 0.0f;
     }
 
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
