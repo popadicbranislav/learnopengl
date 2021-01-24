@@ -5,5 +5,7 @@ project(learnopengl VERSION 0.1.0)
 add_subdirectory(glad)
 add_subdirectory(glfw)
 add_subdirectory(getting_started)
+add_subdirectory(lighting)
 
 target_include_directories(getting_started PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
+target_include_directories(lighting PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
