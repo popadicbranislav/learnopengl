@@ -171,17 +171,16 @@ int main(int, char **)
 
 	glBindVertexArray(0);
 
-	// texture
-	unsigned int diffuseMap, specularMap, emissionMap;
-
+	// load textures (we now use a utility function to keep the code more organized)
+	// -----------------------------------------------------------------------------
+	unsigned int diffuseMap, specularMap;
 	diffuseMap = loadTexture("/home/brano/Code/Projects/learnopengl/lighting/resources/textures/container2.png");
 	specularMap = loadTexture("/home/brano/Code/Projects/learnopengl/lighting/resources/textures/container2_specular.png");
-	emissionMap = loadTexture("/home/brano/Code/Projects/learnopengl/lighting/resources/textures/matrix.jpeg");
 
+	// Shader configuration
 	lightingShader.use();
 	lightingShader.setInt("material.diffuse", 0);
 	lightingShader.setInt("material.specular", 1);
-	lightingShader.setInt("material.emission", 2);
 
 	// render loop
 	// -----------
@@ -208,16 +207,9 @@ int main(int, char **)
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, emissionMap);
-
 		// move light in circles;
 		lightPos.x = sin((float)glfwGetTime() / 2.0f) * 1.8f;
 		lightPos.z = cos((float)glfwGetTime() / 2.0f) * 1.8f;
-
-		// different kind of motion
-		// lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
-		// lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;
 
 		// activate shader
 		lightingShader.use();
