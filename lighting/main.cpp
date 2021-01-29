@@ -212,8 +212,8 @@ int main(int, char **)
 		glBindTexture(GL_TEXTURE_2D, emissionMap);
 
 		// move light in circles;
-		lightPos.x = sin((float)glfwGetTime() / 4.0f) * 2.0f;
-		lightPos.y = cos((float)glfwGetTime() / 4.0f) * 2.0f;
+		lightPos.x = sin((float)glfwGetTime() / 2.0f) * 1.8f;
+		lightPos.z = cos((float)glfwGetTime() / 2.0f) * 1.8f;
 
 		// different kind of motion
 		// lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
@@ -230,7 +230,6 @@ int main(int, char **)
 		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
 		// material properties
-		// lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
 		lightingShader.setFloat("material.shininess", 64.0f);
 
 		// view and projection matrix
