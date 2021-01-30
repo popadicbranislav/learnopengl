@@ -26,16 +26,13 @@ const unsigned int SCR_HEIGHT = 768;
 
 // Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-float lastX = SCR_WIDTH / 2;
-float lastY = SCR_HEIGHT / 2;
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-// position of light
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main(int, char **)
 {
@@ -163,7 +160,6 @@ int main(int, char **)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// texture attribute
-
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
@@ -211,28 +207,19 @@ int main(int, char **)
 
 		// render
 		// ------
-		glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, diffuseMap);
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, specularMap);
-
-		// move light in circles;
-		// lightPos.x = sin((float)glfwGetTime() / 2.0f) * 1.8f;
-		// lightPos.z = cos((float)glfwGetTime() / 2.0f) * 1.8f;
 
 		// activate shader
 		lightingShader.use();
 
-		lightingShader.setVec3("lightPos", lightPos);
+		lightingShader.setVec3("light.position", camera.Position);
+		lightingShader.setVec3("light.direction", camera.Front);
+		lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.setVec3("viewPos", camera.Position);
 
-		// light properties
-		// lightingShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f); // used for directional light
-		lightingShader.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-		lightingShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+		lightingShader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+		lightingShader.setVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
 		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
 		lightingShader.setFloat("light.constant", 1.0f);
@@ -240,7 +227,7 @@ int main(int, char **)
 		lightingShader.setFloat("light.quadratic", 0.032f);
 
 		// material properties
-		lightingShader.setFloat("material.shininess", 64.0f);
+		lightingShader.setFloat("material.shininess", 32.0f);
 
 		// view and projection matrix
 		glm::mat4 projection =
@@ -252,14 +239,20 @@ int main(int, char **)
 
 		// world transformation
 		glm::mat4 model = glm::mat4(1.0f);
-		// lightingShader.setMat4("model", model);
+		lightingShader.setMat4("model", model);
 
-		// render cube
+		// bind diffuse texture
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+		// bind specular texture
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap);
+
+		// render all cubes
 		glBindVertexArray(cubeVAO);
-		// glDrawArrays(GL_TRIANGLES, 0, 36);
-
 		for (unsigned int i = 0; i < 10; i++)
 		{
+			// calculate the model matrix for each object and pass it to shader before drawing
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
@@ -270,16 +263,16 @@ int main(int, char **)
 		}
 
 		// draw lamp object
-		lightCubeShader.use();
-		lightCubeShader.setMat4("projection", projection);
-		lightCubeShader.setMat4("view", view);
-		model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f)); // scale down the size
-		lightCubeShader.setMat4("model", model);
+		// lightCubeShader.use();
+		// lightCubeShader.setMat4("projection", projection);
+		// lightCubeShader.setMat4("view", view);
+		// model = glm::mat4(1.0f);
+		// model = glm::translate(model, lightPos);
+		// model = glm::scale(model, glm::vec3(0.2f)); // scale down the size
+		// lightCubeShader.setMat4("model", model);
 
-		glBindVertexArray(lightVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		// glBindVertexArray(lightVAO);
+		// glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// swap buffers and poll IO events
 		glfwSwapBuffers(window);
