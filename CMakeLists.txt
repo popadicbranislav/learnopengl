@@ -10,3 +10,4 @@ add_subdirectory(model_loading)
 
 target_include_directories(getting_started PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
 target_include_directories(lighting PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
+target_include_directories(model_loading PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
