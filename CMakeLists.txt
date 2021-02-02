@@ -4,6 +4,7 @@ project(learnopengl VERSION 0.1.0)
 
 add_subdirectory(glad)
 add_subdirectory(glfw)
+add_subdirectory(assimp)
 add_subdirectory(getting_started)
 add_subdirectory(lighting)
 add_subdirectory(model_loading)
