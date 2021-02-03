@@ -10,7 +10,6 @@ CMakeDoxygenDefaults.cmake
 cmake_install.cmake
 cmake_uninstall.cmake
 
-
 # Makefile generator clutter
 Makefile
 
@@ -21,3 +20,5 @@ Makefile
 # libs
 assimp
 assimp/*
+
+.cache
