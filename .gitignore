@@ -15,7 +15,7 @@ Makefile
 
 # vscode
 .vscode
-.vscode/*
+.vscode/**
 
 # libs
 assimp
