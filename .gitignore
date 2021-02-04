@@ -15,10 +15,8 @@ Makefile
 
 # vscode
 .vscode
-.vscode/**
 
 # libs
 assimp
-assimp/*
 
 .cache
